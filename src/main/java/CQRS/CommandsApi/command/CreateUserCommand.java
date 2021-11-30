@@ -1,6 +1,5 @@
 package CQRS.CommandsApi.command;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

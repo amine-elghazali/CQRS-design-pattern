@@ -1,7 +1,9 @@
 package CQRS.CommandsApi.aggregate;
 
 import CQRS.CommandsApi.command.CreateUserCommand;
+import CQRS.CommandsApi.command.UpdateUserCommand;
 import CQRS.CommandsApi.event.CreateUserEvent;
+import CQRS.CommandsApi.event.UpdateUserEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,9 +29,16 @@ public class UserAggregate {
 
     @CommandHandler
     public UserAggregate(CreateUserCommand cmd) {
-        //You can perform all the validations
-        CreateUserEvent event =
-                new CreateUserEvent();
+        CreateUserEvent event = new CreateUserEvent();
+
+        BeanUtils.copyProperties(cmd,event);
+
+        AggregateLifecycle.apply(event);
+    }
+
+    @CommandHandler
+    public void handle(UpdateUserCommand cmd){
+        UpdateUserEvent event = new UpdateUserEvent();
 
         BeanUtils.copyProperties(cmd,event);
 
@@ -40,6 +49,14 @@ public class UserAggregate {
 
     @EventSourcingHandler
     public void on(CreateUserEvent event) {
+        this.id = event.getId();
+        this.username = event.getUsername();
+        this.email = event.getEmail();
+        this.password = event.getPassword();
+    }
+
+    @EventSourcingHandler
+    public void on(UpdateUserEvent event) {
         this.id = event.getId();
         this.username = event.getUsername();
         this.email = event.getEmail();

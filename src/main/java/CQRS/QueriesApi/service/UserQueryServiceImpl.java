@@ -5,9 +5,11 @@ import CQRS.CommandsApi.repository.UserRepo;
 import CQRS.QueriesApi.query.GetUsersQuery;
 
 import org.axonframework.queryhandling.QueryHandler;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserQueryServiceImpl {
     private UserRepo userRepo;
 
